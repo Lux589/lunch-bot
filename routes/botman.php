@@ -1,17 +1,22 @@
 <?php
 use App\Http\Controllers\BotManController;
-use App\Opts;
 
 $botman = resolve('botman');
 
 $botman->hears('Hi', function ($bot) {
     $bot->reply('Hello!');
 });
-$botman->hears('Start conversation', BotManController::class.'@startConversation');
 
+$botman->hears('Whats for {lunch}', function ($bot,$lunch) {
+    $bot->reply('Hello!, here is whats for'.$lunch);
+});
+
+$botman->hears('Ekse jaylo', function ($bot) {
+    $bot->reply('Eita Eita f2 :wave:');
+});
 
 $botman->hears('menu', function ($bot) {
-
-
-    $bot->reply(App\Opts::all);
+    $bot->reply('Hello!, here is whats for');
 });
+
+$botman->hears('I want to order', BotManController::class.'@startOrderConversation');
