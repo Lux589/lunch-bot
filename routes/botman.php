@@ -19,4 +19,4 @@ $botman->hears('menu', function ($bot) {
     $bot->reply('Hello!, here is whats for');
 });
 
-$botman->hears('I want to order', BotManController::class.'@startOrderConversation');
+$botman->hears('I want to order', BotManController::class.'@startConversation');
