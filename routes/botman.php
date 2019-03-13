@@ -34,8 +34,8 @@ $botman->hears('(Hi|i want to order|hello|order|place order)', function ($bot) {
 
 });
 
-$botman->hears('delete order', function ($bot,$lunch) {
-    $bot->reply('Hello!, that feature is coming soon'.$lunch);
+$botman->hears('hola', function ($bot) {
+    $bot->reply('Hello!, I hear you.');
 });
 
 
