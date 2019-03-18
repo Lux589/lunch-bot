@@ -1,7 +1,11 @@
 <?php
 use App\Http\Controllers\BotManController;
 use App\Conversations\OrderConversation;
+use Carbon\Carbon;
 use App\Staff;
+use App\Order;
+use App\Opt;
+
 
 $botman = resolve('botman');
 
@@ -34,10 +38,44 @@ $botman->hears('(Hi|i want to order|hello|order|place order)', function ($bot) {
 
 });
 
-$botman->hears('hola', function ($bot) {
-    $bot->reply('Hello!, I hear you.');
+$botman->hears('(show menu|menu|view menu)', function ($bot) {
+    $start = new Carbon('first day of this month');
+
+    $end = new Carbon('last day of this month');
+
+    $menu = Opt::whereBetween('updated_at',[$start,$end])->get();
+
+    foreach($menu as $option){
+        $bot->reply('Type: `'.$option->type.'`'.', Ingredients: `'.$option->description.'`');
+    }
+    
 });
 
+$botman->hears('(order {type})', function ($bot,$type) {
+    $start = new Carbon('first day of this month');
 
-//$botman->hears('I want to order', BotManController::class.'@startConversation');
+    $end = new Carbon('last day of this month');
+    
+    
+    $menu_item = Opt::where('type',$type)->whereBetween('updated_at',[$start,$end])->first();
+
+    
+
+    $staff = Staff::where('email',$bot->getUser()->getInfo()['profile']['email'])->first();
+
+    $order = new Order();
+    
+    $order->staff_id = $staff->id;
+    $order->opts_id = $menu_item->id;
+
+    $order->claimed = 0;
+
+    $order->save();
+
+    Log::info($order);
+
+
+    $bot->reply('order for '.$type.' placed');
+});
+
 

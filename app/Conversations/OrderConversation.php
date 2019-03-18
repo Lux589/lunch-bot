@@ -48,7 +48,7 @@ class OrderConversation extends Conversation
                 elseif($answer->getValue() === 'view'){
                     Log::info('user chosen to view order');
 
-                    $now = new Carbon('first day of this month');
+                    $start = new Carbon('first day of this month');
 
                     $end = new Carbon('last day of this month');
 
@@ -56,7 +56,7 @@ class OrderConversation extends Conversation
 
                     $staff = Staff::where('email',$user_email)->first();
 
-                    $order = Order::where('staff_id',$staff->id)->whereBetween('updated_at',[$now,$end])->first();
+                    $order = Order::where('staff_id',$staff->id)->whereBetween('updated_at',[$start,$end])->first();
 
                     if(count($order) != 0){
                         $chosen_option = Opt::where('id',$order->opts_id)->first();
@@ -73,7 +73,7 @@ class OrderConversation extends Conversation
                 else {
                     $this->say('No worries, let us change your current order.');
 
-                    $now = new Carbon('first day of this month');
+                    $start = new Carbon('first day of this month');
 
                     $end = new Carbon('last day of this month');
 
@@ -81,7 +81,7 @@ class OrderConversation extends Conversation
 
                     $staff = Staff::where('email',$user_email)->first();
 
-                    $order = Order::where('staff_id',$staff->id)->whereBetween('updated_at',[$now,$end])->first()->delete();
+                    $order = Order::where('staff_id',$staff->id)->whereBetween('updated_at',[$start,$end])->first()->delete();
 
                     $this->say('I have just deleted you current order. let us place a new one.');
 
@@ -92,11 +92,11 @@ class OrderConversation extends Conversation
     }
 
     public function askType(){
-            $now = new Carbon('first day of this month');
+            $start = new Carbon('first day of this month');
 
             $end = new Carbon('last day of this month');
 
-            $all_options = Opt::whereBetween('updated_at',[$now,$end])->get();
+            $all_options = Opt::whereBetween('updated_at',[$start,$end])->get();
 
             $options_array = array();
 
@@ -112,7 +112,7 @@ class OrderConversation extends Conversation
            //Log::info($all_opti
 
             $question = Question::create('Which Menu option type would you like')
-            ->callbackId('game_selection')
+            ->callbackId('place_order')
             ->addAction(
                 Menu::create('Pick option type')
                     ->name('games_list')
@@ -149,7 +149,7 @@ class OrderConversation extends Conversation
                 if ($answer->isInteractiveMessageReply()) {
 
                     if ($answer->getValue() === 'yes') {
-                        $now = new Carbon('first day of this month');
+                        $start = new Carbon('first day of this month');
 
                         $end = new Carbon('last day of this month');
 
@@ -159,7 +159,7 @@ class OrderConversation extends Conversation
         
                         $menu = Opt::where('id',$desc)->first();
 
-                        $current_order = Order::where('staff_id',$staff->id)->whereBetween('updated_at', [$now,$end])->first();
+                        $current_order = Order::where('staff_id',$staff->id)->whereBetween('updated_at', [$start,$end])->first();
                         
 
                         if(count($current_order) == 0){
