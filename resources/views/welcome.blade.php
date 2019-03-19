@@ -15,7 +15,7 @@
             font-family: "Varela Round", sans-serif;
             margin: 0;
             padding: 0;
-            background: radial-gradient(#e12236, #e12236);
+            background: radial-gradient(#030405, #040503);
         }
 
         .container {
