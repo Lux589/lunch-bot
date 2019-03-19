@@ -22,7 +22,7 @@ $botman->hears('(Hi|i want to order|hello|order|place order)', function ($bot) {
         $bot->reply('Hello! '.$user->getUsername().' :wave:');
         $bot->reply('Looks like we have never talked before let me give you a quick run through about me');
         $bot->reply('My name is `Lunchbot`. I help you order your monthly lunch. ');
-        $bot->reply('To begin the order processes just say `hi` to me then the process will start');
+        $bot->reply('To begin the order processes just use these keywords `hi`,`i want to order`, `hello`, `order` and `place order` to me then the process will start');
 
         $new_staff = new Staff();
 
@@ -45,37 +45,50 @@ $botman->hears('(show menu|menu|view menu)', function ($bot) {
 
     $menu = Opt::whereBetween('updated_at',[$start,$end])->get();
 
-    foreach($menu as $option){
-        $bot->reply('Type: `'.$option->type.'`'.', Ingredients: `'.$option->description.'`');
+    if(count($menu) == 0){
+        $bot->reply('Seems like we do not have a menu for this month yet.');
+    }
+    else{
+        foreach($menu as $option){
+            $bot->reply('Type: `'.$option->type.'`'.', Ingredients: `'.$option->description.'`');
+        }
     }
     
 });
 
 $botman->hears('(order {type})', function ($bot,$type) {
-    $start = new Carbon('first day of this month');
 
+    $start = new Carbon('first day of this month');
     $end = new Carbon('last day of this month');
-    
     
     $menu_item = Opt::where('type',$type)->whereBetween('updated_at',[$start,$end])->first();
 
-    
+    if(count($menu_item) == 0){
+        $bot->reply('Seems like we do not have that food type in our menu, use `view menu` to see the list of items in this months menu');
+    }
 
     $staff = Staff::where('email',$bot->getUser()->getInfo()['profile']['email'])->first();
 
-    $order = new Order();
+    $current_order = Order::where('staff_id', $staff->id)->whereBetween('updated_at',[$start,$end])->first();
+
+    if(count($current_order) != 0){
+        $bot->reply('Eish seems like you have already ordered for this month');
+        $bot->typesAndWaits(2);
+        $bot->reply('To see what you ordered use, `view order`');
+    }
+    else {
+        $order = new Order();
     
-    $order->staff_id = $staff->id;
-    $order->opts_id = $menu_item->id;
+        $order->staff_id = $staff->id;
+        $order->opts_id = $menu_item->id;
 
-    $order->claimed = 0;
+        $order->claimed = 0;
 
-    $order->save();
+        $order->save();
 
-    Log::info($order);
+        $bot->reply('order for the `'.$type.'` meal has been place successfully');
+    }
 
-
-    $bot->reply('order for '.$type.' placed');
 });
 
 $botman->hears('Lux', function ($bot){
