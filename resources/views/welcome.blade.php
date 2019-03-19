@@ -32,6 +32,8 @@
         .logo {
             margin-right: 40px;
             margin-bottom: 20px;
+            max-width: 500px;
+            width: 100%;
         }
 
         .links a {
