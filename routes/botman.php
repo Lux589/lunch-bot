@@ -145,8 +145,6 @@ $botman->hears('delete order|delete current order|remove order', function ($bot)
     
 });
 
-$botman->hears('Lux', function ($bot){
-    $bot->say('Awe ma se',$bot->getUser()->getId());
-});
+
 
 
