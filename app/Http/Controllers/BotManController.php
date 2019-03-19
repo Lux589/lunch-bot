@@ -6,7 +6,6 @@ use BotMan\BotMan\BotMan;
 use Illuminate\Http\Request;
 use App\Conversations\ExampleConversation;
 use App\Http\Conversations\OrderConversation;
-use Illuminate\Http\Request;
 
 class BotManController extends Controller
 {
