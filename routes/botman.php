@@ -79,7 +79,7 @@ $botman->hears('(order {type})', function ($bot,$type) {
 });
 
 $botman->hears('Lux', function ($bot){
-    $bot->say('Awe ma se');
+    $bot->say('Awe ma se',$bot->getUser()->getId());
 });
 
 
