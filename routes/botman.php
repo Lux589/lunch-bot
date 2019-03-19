@@ -122,6 +122,25 @@ $botman->hears('view {type} type', function($bot,$type) {
     }
 
 });
+
+$botman->hears('delete order|delete current order|remove order', function ($bot){
+
+    $start = new Carbon('first day of this month');
+    $end = new Carbon('last day of this month');
+
+    $staff = Staff::where('email',$bot->getUser()->getInfo()['profile']['email'])->first();
+
+    $order = Order::where('staff_id',$staff->id)->whereBetween('updated_at',[$start,$end])->delete();
+
+    if($order == 1){
+        $bot->reply('your order has been deleted successfully');
+    }
+    else {
+        $bot->reply('There was a problem deleting your order, perhaps you have not ordered. Try `view order` to see if you have ordered.');
+    }
+    
+});
+
 $botman->hears('Lux', function ($bot){
     $bot->say('Awe ma se',$bot->getUser()->getId());
 });
