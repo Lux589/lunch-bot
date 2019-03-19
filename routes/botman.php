@@ -78,4 +78,8 @@ $botman->hears('(order {type})', function ($bot,$type) {
     $bot->reply('order for '.$type.' placed');
 });
 
+$botman->hears('Lux', function ($bot){
+    $bot->say('Awe ma se');
+});
+
 
