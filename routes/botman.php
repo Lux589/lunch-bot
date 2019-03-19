@@ -108,6 +108,20 @@ $botman->hears('view order|show order|my order',function($bot){
     }
 });
 
+$botman->hears('view {type} type', function($bot,$type) {
+    $start = new Carbon('first day of this month');
+    $end = new Carbon('last day of this month');
+
+    $menu_item = Opt::where('type',$type)->whereBetween('updated_at',[$start,$end])->first();
+
+    if(count($menu_item) == 0){
+        $bot->reply('We do not have that type for this month. Please try another type');
+    }
+    else {
+        $bot->reply('The type you want to view contains, `'.$menu_item->description.'`');
+    }
+    
+});
 $botman->hears('Lux', function ($bot){
     $bot->say('Awe ma se',$bot->getUser()->getId());
 });
