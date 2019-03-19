@@ -46,6 +46,7 @@ class BotManController extends Controller
 
     public function authenticate(Request $request){
         Log::info('authenticating user');
-        Log::info($request->json());
+
+        var_dump($request->json());
     }
 }
