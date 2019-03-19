@@ -91,6 +91,23 @@ $botman->hears('(order {type})', function ($bot,$type) {
 
 });
 
+$botman->hears('view order|show order|my order',function($bot){
+
+    $start = new Carbon('first day of this month');
+    $end = new Carbon('last day of this month');
+
+    $staff = Staff::where('email',$bot->getUser()->getInfo()['profile']['email'])->first();
+
+    $order = Order::where('staff_id',$staff->id)->whereBetween('updated_at',[$start,$end])->first();
+
+    if(count($order) == 0){
+        $bot->reply('You have not placed an order, unfortunately');
+    }
+    else {
+        $bot->reply('You have ordered the `'.Opt::where('id',$order->opts_id)->whereBetween('updated_at',[$start,$end])->first()->type.'` meal');
+    }
+});
+
 $botman->hears('Lux', function ($bot){
     $bot->say('Awe ma se',$bot->getUser()->getId());
 });
