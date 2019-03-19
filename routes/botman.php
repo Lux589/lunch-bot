@@ -5,7 +5,7 @@ use Carbon\Carbon;
 use App\Staff;
 use App\Order;
 use App\Opt;
-
+use BotMan\BotMan\Messages\Outgoing\OutgoingMessage;
 
 $botman = resolve('botman');
 
@@ -145,6 +145,11 @@ $botman->hears('delete order|delete current order|remove order', function ($bot)
     
 });
 
+$botman->hears('outgoing',function($bot) {
+    $message = OutgoingMessage::create('This is an outgoing message');
+
+    $bot->say($message);
+});
 
 
 
