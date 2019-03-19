@@ -115,12 +115,12 @@ $botman->hears('view {type} type', function($bot,$type) {
     $menu_item = Opt::where('type',$type)->whereBetween('updated_at',[$start,$end])->first();
 
     if(count($menu_item) == 0){
-        $bot->reply('We do not have that type for this month. Please try another type');
+        $bot->reply('We do not have that food type for this month. Please try another type');
     }
     else {
-        $bot->reply('The type you want to view contains, `'.$menu_item->description.'`');
+        $bot->reply('The food type contains, `'.$menu_item->description.'`');
     }
-    
+
 });
 $botman->hears('Lux', function ($bot){
     $bot->say('Awe ma se',$bot->getUser()->getId());
