@@ -132,6 +132,8 @@ $botman->hears('delete order|delete current order|remove order', function ($bot)
 
     $order = Order::where('staff_id',$staff->id)->whereBetween('updated_at',[$start,$end])->delete();
 
+    Log::info($order);
+    
     if($order == 1){
         $bot->reply('your order has been deleted successfully');
     }
