@@ -51,6 +51,8 @@ $botman->hears('(show menu|menu|view menu)', function ($bot) {
     else{
         foreach($menu as $option){
             $bot->reply('Type: `'.$option->type.'`'.', Ingredients: `'.$option->description.'`');
+
+            $bot->typesAndWaits(1);
         }
     }
     
@@ -132,8 +134,8 @@ $botman->hears('delete order|delete current order|remove order', function ($bot)
 
     $order = Order::where('staff_id',$staff->id)->whereBetween('updated_at',[$start,$end])->delete();
 
-    Log::info($order);
-    
+    //Log::info($order);
+
     if($order == 1){
         $bot->reply('your order has been deleted successfully');
     }
