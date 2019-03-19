@@ -18,7 +18,7 @@ Route::get('/', function () {
 Route::match(['get', 'post'], '/botman', 'BotManController@handle');
 Route::match(['get', 'post'], '/order', 'BotManController@handle');
 Route::get('/botman/tinker', 'BotManController@tinker');
-
+Route::get('/oauth', 'BotManController@authenticate');
 
 Route::group(['prefix' => 'admin'], function () {
     Voyager::routes();

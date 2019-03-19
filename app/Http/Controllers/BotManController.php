@@ -6,6 +6,7 @@ use BotMan\BotMan\BotMan;
 use Illuminate\Http\Request;
 use App\Conversations\ExampleConversation;
 use App\Http\Conversations\OrderConversation;
+use Illuminate\Http\Request;
 
 class BotManController extends Controller
 {
@@ -19,7 +20,7 @@ class BotManController extends Controller
         $botman->hears('Lux', function ($bot){
             $bot->say('Awe ma se',$bot->getUser()->getId());
         });
-        
+
         $botman->listen();
     }
 
@@ -42,5 +43,9 @@ class BotManController extends Controller
 
     public function startOrderConversation(Botman $bot){
         $bot->startConversation(new OrderConversation());
+    }
+
+    public function authenticate(Request $request){
+        Log::info($request);
     }
 }
