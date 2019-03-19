@@ -148,7 +148,7 @@ $botman->hears('delete order|delete current order|remove order', function ($bot)
 $botman->hears('outgoing',function($bot) {
     $message = OutgoingMessage::create('This is an outgoing message');
 
-    $bot->say($message);
+    $bot->say($message,$bot->getUser()->getId());
 });
 
 
