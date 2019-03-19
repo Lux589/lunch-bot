@@ -47,6 +47,6 @@ class BotManController extends Controller
     public function authenticate(Request $request){
         Log::info('authenticating user');
 
-        var_dump('If you see this screen, you have been successfully authorized to use the lunchbot app with slack');
+        echo 'If you see this screen, you have been successfully authorized to use the lunchbot app with slack';
     }
 }
