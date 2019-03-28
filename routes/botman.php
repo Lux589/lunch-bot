@@ -30,6 +30,8 @@ $botman->hears('(Hi|i want to order|hello|order|place order)', function ($bot) {
 
         $new_staff->email = $user->getInfo()['profile']['email'];
 
+        $new_staff->slack_uid = $user->detId();
+
         $new_staff->save();
 
         $bot->reply('you have now been successfully added to my database. When you want to place an order just say `hi` and i`ll gladly help');
