@@ -153,7 +153,7 @@ $botman->hears('outgoing',function($bot) {
     $bot->say($message,$bot->getUser()->getId());
 });
 
-$botman->hears('send orders',function($bot) {
+$botman->hears('count orders',function($bot) {
     $start = new Carbon('first day of this month');
     $end = new Carbon('last day of this month');
 
@@ -189,7 +189,13 @@ $botman->hears('send orders',function($bot) {
 
     Log::info('Low carb orders'.$low_carb_count);
 
-    $bot->reply('everything is logged');
+    $bot->reply('There are '.$healthy_count.' '.$healthy.' orders');
+
+    $bot->reply('There are '.$hearty_count.' '.$hearty.' orders');
+
+    $bot->reply('There are '.$vegetarian_count.' '.$vegetarian.' orders');
+
+    $bot->reply('There are '.$low_carb_count.' '.$low_carb.' orders');
 });
 
 
