@@ -164,13 +164,13 @@ $botman->hears('send orders',function($bot) {
     $vegetarian = 'vegetarian';
     $low_carb = 'low carb';
 
-    $healthy_id = Opt::where('type',$healthy)->whereBetween('updated_at',[$start,$end])->get()->id;
+    $healthy_id = Opt::where('type',$healthy)->whereBetween('updated_at',[$start,$end])->first()->id;
 
-    $hearty_id = Opt::where('type',$hearty)->whereBetween('updated_at',[$start,$end])->get()->id;
+    $hearty_id = Opt::where('type',$hearty)->whereBetween('updated_at',[$start,$end])->first()->id;
 
-    $vegetarian_id = Opt::where('type',$vegetarian)->whereBetween('updated_at',[$start,$end])->get()->id;
+    $vegetarian_id = Opt::where('type',$vegetarian)->whereBetween('updated_at',[$start,$end])->first()->id;
 
-    $low_carb_id = Opt::where('type',$low_carb)->whereBetween('updated_at',[$start,$end])->get()->id;
+    $low_carb_id = Opt::where('type',$low_carb)->whereBetween('updated_at',[$start,$end])->first()->id;
 
     $healthy_count = Order::where('opts_id',$healthy_id)->whereBetween('updated_at',[$start,$end])->count();
 
