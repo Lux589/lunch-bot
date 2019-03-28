@@ -30,7 +30,7 @@ $botman->hears('(Hi|i want to order|hello|order|place order)', function ($bot) {
 
         $new_staff->email = $user->getInfo()['profile']['email'];
 
-        $new_staff->slack_uid = $user->detId();
+        $new_staff->slack_uid = $user->getId();
 
         $new_staff->save();
 
