@@ -153,5 +153,44 @@ $botman->hears('outgoing',function($bot) {
     $bot->say($message,$bot->getUser()->getId());
 });
 
+$botman->hears('send orders',function($bot) {
+    $start = new Carbon('first day of this month');
+    $end = new Carbon('last day of this month');
+
+    $bot->reply('let me help you quickly');
+
+    $healthy = 'healthy';
+    $hearty = 'hearty';
+    $vegetarian = 'vegetarian';
+    $low_carb = 'low carb';
+
+    $healthy_id = Opt::where('type',$healthy)->whereBetween('updated_at',[$start,$end])->get()->id;
+
+    $hearty_id = Opt::where('type',$hearty)->whereBetween('updated_at',[$start,$end])->get()->id;
+
+    $vegetarian_id = Opt::where('type',$vegetarian)->whereBetween('updated_at',[$start,$end])->get()->id;
+
+    $low_carb_id = Opt::where('type',$low_carb)->whereBetween('updated_at',[$start,$end])->get()->id;
+
+    $healthy_count = Order::where('opts_id',$healthy_id)->whereBetween('updated_at',[$start,$end])->count();
+
+    $hearty_count = Order::where('opts_id',$hearty_id)->whereBetween('updated_at',[$start,$end])->count();
+
+    $vegetarian_count = Order::where('opts_id',$vegetarian_id)->whereBetween('updated_at',[$start,$end])->count();
+    
+    $low_carb_count = Order::where('opts_id',$low_carb_id)->whereBetween('updated_at',[$start,$end])->count();
+
+
+    Log::info('Healthy orders'.$healthy_count);
+
+    Log::info('Hearty orders'.$hearty_count);
+
+    Log::info('Vegetarian order'.$vegetarian_count);
+
+    Log::info('Low carb orders'.$low_carb_count);
+
+    $bot->reply('everything is logged');
+});
+
 
 
