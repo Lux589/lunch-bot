@@ -45,7 +45,7 @@ $botman->hears('(show menu|menu|view menu)', function ($bot) {
 
     $end = new Carbon('last day of this month');
 
-    $menu = Opt::whereBetween('updated_at',[$start,$end])->get();
+    $menu = Opt::whereBetween('created_at',[$start,$end])->get();
 
     if(count($menu) == 0){
         $bot->reply('Seems like we do not have a menu for this month yet.');
@@ -65,7 +65,7 @@ $botman->hears('(order {type})', function ($bot,$type) {
     $start = new Carbon('first day of this month');
     $end = new Carbon('last day of this month');
     
-    $menu_item = Opt::where('type',$type)->whereBetween('updated_at',[$start,$end])->first();
+    $menu_item = Opt::where('type',$type)->whereBetween('created_at',[$start,$end])->first();
 
     if(count($menu_item) == 0){
         $bot->reply('Seems like we do not have that food type in our menu, use `view menu` to see the list of items in this months menu');
@@ -73,7 +73,7 @@ $botman->hears('(order {type})', function ($bot,$type) {
 
     $staff = Staff::where('email',$bot->getUser()->getInfo()['profile']['email'])->first();
 
-    $current_order = Order::where('staff_id', $staff->id)->whereBetween('updated_at',[$start,$end])->first();
+    $current_order = Order::where('staff_id', $staff->id)->whereBetween('created_at',[$start,$end])->first();
 
     if(count($current_order) != 0){
         $bot->reply('Eish seems like you have already ordered for this month');
@@ -102,13 +102,13 @@ $botman->hears('view order|show order|my order',function($bot){
 
     $staff = Staff::where('email',$bot->getUser()->getInfo()['profile']['email'])->first();
 
-    $order = Order::where('staff_id',$staff->id)->whereBetween('updated_at',[$start,$end])->first();
+    $order = Order::where('staff_id',$staff->id)->whereBetween('created_at',[$start,$end])->first();
 
     if(count($order) == 0){
         $bot->reply('You have not placed an order, unfortunately');
     }
     else {
-        $bot->reply('You have ordered the `'.Opt::where('id',$order->opts_id)->whereBetween('updated_at',[$start,$end])->first()->type.'` meal');
+        $bot->reply('You have ordered the `'.Opt::where('id',$order->opts_id)->whereBetween('created_at',[$start,$end])->first()->type.'` meal');
     }
 });
 
@@ -116,7 +116,7 @@ $botman->hears('view {type} type', function($bot,$type) {
     $start = new Carbon('first day of this month');
     $end = new Carbon('last day of this month');
 
-    $menu_item = Opt::where('type',$type)->whereBetween('updated_at',[$start,$end])->first();
+    $menu_item = Opt::where('type',$type)->whereBetween('created_at',[$start,$end])->first();
 
     if(count($menu_item) == 0){
         $bot->reply('We do not have that food type for this month. Please try another type');
@@ -134,7 +134,7 @@ $botman->hears('delete order|delete current order|remove order', function ($bot)
 
     $staff = Staff::where('email',$bot->getUser()->getInfo()['profile']['email'])->first();
 
-    $order = Order::where('staff_id',$staff->id)->whereBetween('updated_at',[$start,$end])->delete();
+    $order = Order::where('staff_id',$staff->id)->whereBetween('created_at',[$start,$end])->delete();
 
     //Log::info($order);
 
@@ -164,21 +164,21 @@ $botman->hears('count orders',function($bot) {
     $vegetarian = 'vegetarian';
     $low_carb = 'low carb';
 
-    $healthy_id = Opt::where('type',$healthy)->whereBetween('updated_at',[$start,$end])->first()->id;
+    $healthy_id = Opt::where('type',$healthy)->whereBetween('created_at',[$start,$end])->first()->id;
 
-    $hearty_id = Opt::where('type',$hearty)->whereBetween('updated_at',[$start,$end])->first()->id;
+    $hearty_id = Opt::where('type',$hearty)->whereBetween('created_at',[$start,$end])->first()->id;
 
-    $vegetarian_id = Opt::where('type',$vegetarian)->whereBetween('updated_at',[$start,$end])->first()->id;
+    $vegetarian_id = Opt::where('type',$vegetarian)->whereBetween('created_at',[$start,$end])->first()->id;
 
-    $low_carb_id = Opt::where('type',$low_carb)->whereBetween('updated_at',[$start,$end])->first()->id;
+    $low_carb_id = Opt::where('type',$low_carb)->whereBetween('created_at',[$start,$end])->first()->id;
 
-    $healthy_count = Order::where('opts_id',$healthy_id)->whereBetween('updated_at',[$start,$end])->count();
+    $healthy_count = Order::where('opts_id',$healthy_id)->whereBetween('created_at',[$start,$end])->count();
 
-    $hearty_count = Order::where('opts_id',$hearty_id)->whereBetween('updated_at',[$start,$end])->count();
+    $hearty_count = Order::where('opts_id',$hearty_id)->whereBetween('created_at',[$start,$end])->count();
 
-    $vegetarian_count = Order::where('opts_id',$vegetarian_id)->whereBetween('updated_at',[$start,$end])->count();
+    $vegetarian_count = Order::where('opts_id',$vegetarian_id)->whereBetween('created_at',[$start,$end])->count();
     
-    $low_carb_count = Order::where('opts_id',$low_carb_id)->whereBetween('updated_at',[$start,$end])->count();
+    $low_carb_count = Order::where('opts_id',$low_carb_id)->whereBetween('created_at',[$start,$end])->count();
 
 
     Log::info('Healthy orders'.$healthy_count);

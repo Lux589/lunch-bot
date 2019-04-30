@@ -56,7 +56,7 @@ class OrderConversation extends Conversation
 
                     $staff = Staff::where('email',$user_email)->first();
 
-                    $order = Order::where('staff_id',$staff->id)->whereBetween('updated_at',[$start,$end])->first();
+                    $order = Order::where('staff_id',$staff->id)->whereBetween('created_at',[$start,$end])->first();
 
                     if(count($order) != 0){
                         $chosen_option = Opt::where('id',$order->opts_id)->first();
@@ -81,7 +81,7 @@ class OrderConversation extends Conversation
 
                     $staff = Staff::where('email',$user_email)->first();
 
-                    $order = Order::where('staff_id',$staff->id)->whereBetween('updated_at',[$start,$end])->first()->delete();
+                    $order = Order::where('staff_id',$staff->id)->whereBetween('created_at',[$start,$end])->first()->delete();
 
                     $this->say('I have just deleted you current order. let us place a new one.');
 
@@ -96,7 +96,7 @@ class OrderConversation extends Conversation
 
             $end = new Carbon('last day of this month');
 
-            $all_options = Opt::whereBetween('updated_at',[$start,$end])->get();
+            $all_options = Opt::whereBetween('created_at',[$start,$end])->get();
 
             $options_array = array();
 
@@ -159,7 +159,7 @@ class OrderConversation extends Conversation
         
                         $menu = Opt::where('id',$desc)->first();
 
-                        $current_order = Order::where('staff_id',$staff->id)->whereBetween('updated_at', [$start,$end])->first();
+                        $current_order = Order::where('staff_id',$staff->id)->whereBetween('created_at', [$start,$end])->first();
                         
 
                         if(count($current_order) == 0){
